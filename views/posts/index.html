@@ -1,0 +1,46 @@
+{{define "posts/index"}}
+{{template "header" .}}
+{{template "dashboard/navbar" .}}
+{{template "dashboard/sidebar" .}}
+<div id="main-column" class="container-fluid" role="main">
+  <h2>{{.Title}}</h2>
+  <table class="table panel panel-default">
+    <thead>
+      <tr>
+        <th class="name">Title</th>
+        <th class="category">Category</th>
+        <th class="published">Published</th>
+        <th class="timestamp">Created</th>
+        <th class="actions">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .List}}
+        <tr>
+          <td class="name">{{.Title}}</td>
+          <td class="name">{{.Category}}</td>
+          <td class="published">
+            {{if .Published}}
+            <span class="glyphicon glyphicon-ok"></span>
+            {{else}}
+            <span class="glyphicon glyphicon-remove"></span>
+            {{end}}
+          </td>
+          <td class="timestamp">{{dateTime .CreatedAt}}</td>
+          <td class="actions">
+            <a href="/posts/{{.Slug}}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-eye-open"></span></a>
+            <a href="/admin/posts/edit/{{.ID.Hex}}" class="btn btn-sm btn-primary"><span class="glyphicon glyphicon-pencil"></span></a>
+            <form class="inline-block" action="/admin/posts/delete/{{.ID.Hex}}" method="post">
+              <button type="button" class="btn btn-sm btn-danger" onclick="((confirm('Are you sure')) ? this.form.submit() : null);"><span class="glyphicon glyphicon-remove"></span></button>
+            </form>
+          </td>
+        </tr>
+      {{end}}
+    </tbody>
+  </table>
+  <div class="actions">
+    <a href="/admin/new_post" class="btn btn-primary">New Post</a>
+  </div>
+</div>
+{{template "footer" .}}
+{{end}}

@@ -1,0 +1,84 @@
+{{define "posts/form"}}
+{{template "header" .}}
+{{template "dashboard/navbar" .}}
+{{template "dashboard/sidebar" .}}
+<div id="main-column" class="container-fluid" role="main">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form class="form-horizontal" method="post">
+      <fieldset>
+        <legend>{{.Title}}</legend>
+        {{range .Flash}}
+          <div class="alert alert-danger">{{.}}</div><p>
+        {{end}}
+        <input type="hidden" name="id" value="{{.Post.ID}}" >
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="title">Title</label>
+          <div class="col-md-10">
+            <input id="title" name="title" value="{{.Post.Title}}" placeholder="Post title" class="form-control input-md" required="" >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="slug">Slug</label>
+          <div class="col-md-10">
+            <input id="slug" name="slug" value="{{.Post.Slug}}" placeholder="Post Slug" class="form-control input-md" required="" >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="description">Description</label>
+          <div class="col-md-10">
+            <input id="description" type="hidden" name="description">
+            <div id="markdown-editor">{{.Post.Description}}</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="tags">Tags</label>
+          <div class="col-md-10">
+            <select id="tags" name="tags" class="form-control" multiple="multiple">
+              {{$post := .Post}}
+              {{if .Tags }}
+              {{range $tag := .Tags}}
+              <option {{if stringInSlice $tag.Name $post.Tags}}selected="selected"{{end}}>{{$tag.Name}}</option>
+              {{end}}
+              {{end}}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="category">Category</label>
+          <div class="col-md-10">
+            <select id="category" name="category" class="form-control">
+              {{if .Categorys }}
+              {{range $category := .Categorys}}
+              <option {{if eq $category.Name $post.Category}}selected="selected"{{end}}>{{$category.Name}}</option>
+              {{end}}
+              {{end}}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-offset-2 col-md-10" for="published">
+            <input id="published" name="published" type="checkbox" value="true" {{if .Post.Published}}checked{{end}} >
+            Publish
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2"></label>
+          <div class="col-md-10">
+            <input type="submit" class="btn btn-primary" value="Submit" onclick="$('#description').val($('#markdown-editor').markdownEditor('content'))">
+            <input type="button" class="btn btn-default" formnovalidate onclick="window.history.back();" value="Cancel">
+          </div>
+        </div>
+      </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+{{template "footer" .}}
+{{end}}

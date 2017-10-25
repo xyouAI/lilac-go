@@ -1,0 +1,14 @@
+{{define "dashboard/show"}}
+{{template "header" .}}
+{{template "dashboard/navbar" .}}
+{{template "dashboard/sidebar" .}}
+<div id="main-column" class="container-fluid" role="main">
+  <div class="jumbotron panel">
+    <h2>{{.Title}}</h2>
+    <div class="well">
+      <a href="https://github.com/phpfor/lilac-go">https://github.com/phpfor/lilac-go</a>
+    </div>
+  </div>
+</div>
+{{template "footer" .}}
+{{end}}
