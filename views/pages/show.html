@@ -1,12 +1,33 @@
 {{define "pages/show"}}
-{{template "header" .}}
-{{template "navbar" .}}
-<div class="container" role="main">
-  {{template "sidebar" .}}
-  <div id="main-column">
-    <h2>{{.Title}}</h2>
-    <div class="description">{{.Description}}</div>
+{{template "_block/header" .}}
+<main id="main" class="main">
+  <div class="main-inner">
+    <div class="content-wrap">
+      <div id="content" class="content">
+        <div id="posts" class="posts-expand">
+          <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+            <div class="post-body" itemprop="articleBody">
+              {{.Description}}
+              {{template "_block/reward" .}}
+            </div>
+          </article>
+          <div class="post-spread">
+          </div>
+        </div>
+      </div>
+      <div class="comments" id="comments">
+      </div>
+    </div>
+
+    {{if 0}}
+    <!--TODO siderbar-->
+    {{template "_block/sidebar" .}}
+    {{end}}
+
+
   </div>
-</div>
-{{template "footer" .}}
+</main>
+
+{{template "_block/footer" .}}
 {{end}}
+

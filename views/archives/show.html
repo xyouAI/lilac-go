@@ -1,16 +1,118 @@
 {{define "archives/show"}}
 {{template "header" .}}
-{{template "navbar" .}}
-<div class="container" role="main">
-  {{template "sidebar" .}}
-  <div id="main-column">
-    <h2>{{.Title}}</h2>
-    {{range .List}}
-    <h3><a href="/posts/{{.ID}}">{{.Name}}</a></h3>
-    {{template "posts/post-info" .}}
-    <div class="excerpt">{{.Excerpt}}</div>
-    {{end}}
-  </div>
+<div class="content">
+  <section class="jumbotron geopattern" data-pattern-id="All My Blogs">
+    <div class="container">
+      <div id="jumbotron-meta-info">
+        <h1>All My Blogs</h1>
+        <span class="meta-info">
+                    <span class="mega-octicon octicon-clippy"></span>&nbsp;&nbsp; Take notes about everything new
+            </span>
+      </div>
+    </div>
+  </section>
+  <script>
+      $(document).ready(function(){
+          $('.geopattern').each(function(){
+              $(this).geopattern($(this).data('pattern-id'));
+          });
+      });
+  </script>
+  <article class="post container">
+    <div class="row">
+      <div class="col-md-8">
+        <!-- Blog list -->
+        <ul id="posts-list">
+          {{range .List}}
+          <li class="posts-list-item">
+            <div class="posts-content">
+              <span class="posts-list-meta">{{dateTime .CreatedAt}}</span>
+              <a class="posts-list-name bubble-float-left" href="/posts/{{.Slug}}">{{.Title}}</a>
+              <span class="circle"></span>
+            </div>
+          </li>
+          {{end}}
+        </ul>
+
+        <!-- Pagination -->
+        <div class="pagination text-align">
+          <div class="btn-group">
+
+
+            <button disabled="disabled" href="javascript:;" class="btn btn-outline">&laquo;</button>
+
+
+
+            <a href="/" class="btn btn-outline">1</a>
+
+
+
+
+
+            <button disabled="disabled" href="javascript:;" class="btn btn-outline">&raquo;</button>
+
+
+          </div>
+        </div>
+
+        <!-- Comments -->
+
+        <div class="comments">
+          <div id="disqus_thread"></div>
+          <script>
+              /**
+               * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+               * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+               */
+              /*
+               var disqus_config = function () {
+               this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+               this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+               };
+               */
+              (function() { // DON'T EDIT BELOW THIS LINE
+                  var d = document, s = d.createElement('script');
+
+                  s.src = '//httpdongchuangithubio.disqus.com/embed.js';
+
+                  s.setAttribute('data-timestamp', +new Date());
+                  (d.head || d.body).appendChild(s);
+              })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+        </div>
+
+
+
+      </div>
+
+      <div class="col-md-4">
+        <h3 class="sidebar-title">Blog Categories</h3>
+        <div id="blog-categories">
+          <ul class="list-group">
+            <li class="list-group-item">
+              java
+              <span class="badge">3</span>
+            </li>
+          </ul>
+
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $("#blog-categories li").css('text-transform','capitalize')
+            });
+        </script>
+      </div>
+
+    </div>
+    <script>
+        $(document).ready(function(){
+            // Enable bootstrap tooltip
+            $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+        });
+    </script>
+
+  </article>
 </div>
 {{template "footer" .}}
 {{end}}

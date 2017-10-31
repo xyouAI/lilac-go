@@ -10,6 +10,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
+func Tags(c *gin.Context) {
+	list, err := models.GetTags()
+	if err != nil {
+		c.HTML(http.StatusInternalServerError, "errors/500", nil)
+		logrus.Error(err)
+		return
+	}
+	h := helpers.DefaultH(c)
+	h["Title"] = "List of tags"
+	h["List"] = list
+	h["Count"] = len(list)
+	h["Active"] = "tags"
+	c.HTML(http.StatusOK, "tags/index", h)
+}
+
 //TagGet handles GET /tags/:name route
 func TagGet(c *gin.Context) {
 	tag, err := models.GetTag(c.Param("name"))
@@ -24,10 +40,10 @@ func TagGet(c *gin.Context) {
 	}
 
 	h := helpers.DefaultH(c)
-	h["Title"] = tag.Name
+	h["Tag"] = tag
 	h["Active"] = "tags"
 	h["List"] = list
-	c.HTML(http.StatusOK, "tags/show", h)
+	c.HTML(http.StatusOK, "categories/show", h)
 }
 
 //TagIndex handles GET /admin/tags route
@@ -42,7 +58,7 @@ func TagIndex(c *gin.Context) {
 	h["Title"] = "List of tags"
 	h["List"] = list
 	h["Active"] = "tags"
-	c.HTML(http.StatusOK, "tags/index", h)
+	c.HTML(http.StatusOK, "admin/tags/index", h)
 }
 
 //TagNew handles GET /admin/new_tag route
@@ -54,7 +70,7 @@ func TagNew(c *gin.Context) {
 	h["Flash"] = session.Flashes()
 	session.Save()
 
-	c.HTML(http.StatusOK, "tags/form", h)
+	c.HTML(http.StatusOK, "admin/tags/form", h)
 }
 
 //TagCreate handles POST /admin/new_tag route

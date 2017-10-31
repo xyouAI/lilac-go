@@ -11,5 +11,5 @@ import (
 func AdminGet(c *gin.Context) {
 	h := helpers.DefaultH(c)
 	h["Title"] = "Admin dashboard"
-	c.HTML(http.StatusOK, "dashboard/show", h)
+	c.HTML(http.StatusOK, "admin/dashboard/index", h)
 }

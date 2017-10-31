@@ -10,19 +10,19 @@ import (
 	"github.com/phpfor/lilac-go/models"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/russross/blackfriday"
+	//"github.com/russross/blackfriday"
 )
 
 //PageGet handles GET /pages/:id route
 func PageGet(c *gin.Context) {
-	page, err := models.GetPage(c.Param("slug"))
+	page, err := models.GetPageBySlug(c.Param("slug"))
 	if err != nil || !page.Published {
 		c.HTML(http.StatusNotFound, "errors/404", nil)
 		return
 	}
 	h := helpers.DefaultH(c)
 	h["Title"] = page.Name
-	h["Description"] = template.HTML(string(blackfriday.MarkdownCommon([]byte(page.Description))))
+	h["Description"] = template.HTML(page.Description)
 	h["Active"] = "pages"
 	c.HTML(http.StatusOK, "pages/show", h)
 }
@@ -39,7 +39,7 @@ func PageIndex(c *gin.Context) {
 	h["Title"] = "List of pages"
 	h["List"] = list
 	h["Active"] = "pages"
-	c.HTML(http.StatusOK, "pages/index", h)
+	c.HTML(http.StatusOK, "admin/pages/index", h)
 }
 
 //PageNew handles GET /admin/new_page route
@@ -51,7 +51,7 @@ func PageNew(c *gin.Context) {
 	h["Flash"] = session.Flashes()
 	session.Save()
 
-	c.HTML(http.StatusOK, "pages/form", h)
+	c.HTML(http.StatusOK, "admin/pages/form", h)
 }
 
 //PageCreate handles POST /admin/new_page route
@@ -87,7 +87,7 @@ func PageEdit(c *gin.Context) {
 	session := sessions.Default(c)
 	h["Flash"] = session.Flashes()
 	session.Save()
-	c.HTML(http.StatusOK, "pages/form", h)
+	c.HTML(http.StatusOK, "admin/pages/form", h)
 }
 
 //PageUpdate handles POST /admin/pages/:id/edit route
@@ -100,7 +100,7 @@ func PageUpdate(c *gin.Context) {
 		c.Redirect(http.StatusSeeOther, "/admin/pages")
 		return
 	}
-	if err := page.Update(c.Param("slug")); err != nil {
+	if err := page.Update(c.Param("id")); err != nil {
 		c.HTML(http.StatusInternalServerError, "errors/500", nil)
 		logrus.Error(err)
 		return

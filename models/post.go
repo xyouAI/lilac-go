@@ -17,17 +17,22 @@ import (
 
 //Post type contains blog post info
 type Post struct {
-	ID          bson.ObjectId `bson:"_id,omitempty"`
-	Title       string        `form:"title" json:"title"`
-	Slug        string        `form:"slug" json:"slug"`
-	Category    string        `form:"category" json:"category"`
-	Description string        `form:"description" json:"description"`
-	Published   bool          `form:"published" json:"published"`
-	CreatedAt   time.Time     `json:"created_at" bson:"created_at,omitempty"`
-	UpdatedAt   time.Time     `json:"updated_at" bson:"updated_at,omitempty"`
-	Author      User          `json:"author"`
-	Tags        []string      `form:"tags" json:"tags" bson:",omitempty"` //can't make gin Bind form field to []Tag, so use []string instead
-	//CommentCount int64    `form:"-" json:"comment_count" db:"comment_count"`
+	ID             bson.ObjectId `bson:"_id,omitempty"`
+	Title          string        `form:"title" json:"title"`
+	Slug           string        `form:"slug" json:"slug"`
+	Category       string        `form:"categories" json:"categories"`
+	Summary        string        `form:"summary" json:"summary"`
+	Description    string        `form:"post-editormd-html-code" json:"post-editormd-html-code"`
+	DescriptionDoc string        `form:"post-editormd-markdown-doc" json:"post-editormd-markdown-doc"`
+	Published      bool          `form:"published" json:"published"`
+	CreatedAt      time.Time     `json:"created_at" bson:"created_at,omitempty"`
+	UpdatedAt      time.Time     `json:"updated_at" bson:"updated_at,omitempty"`
+	Author         User          `json:"author"`
+	Tags           []string      `form:"tags" json:"tags" bson:",omitempty"`
+}
+
+type PostPages struct {
+	Count int
 }
 
 //type TagList struct {
@@ -52,7 +57,7 @@ func (post *Post) Update(id string) error {
 	logrus.Println("post edit", post)
 	objectId := bson.ObjectIdHex(id)
 	post.UpdatedAt = time.Now()
-	logrus.Println("objectId : ", objectId)
+	//logrus.Println("objectId : ", objectId)
 	err := collection.Update(bson.M{"_id": objectId}, bson.M{"$set": post})
 	if err == nil {
 		post.UpdateTags()
@@ -102,15 +107,27 @@ func GetPosts() ([]Post, error) {
 	err := collection.Find(nil).Sort("-created_at").All(&list)
 	logrus.Errorf("list : %s", list)
 	return list, err
-	//err := db.Select(&list, "SELECT * FROM posts ORDER BY posts.id DESC")
-	//return list, err
+}
+
+//GetPostsByPage
+func GetPostsByPage(currentPage, limit int) ([]Post ,error) {
+	var list []Post
+	collection := db.C("post")
+	err := collection.Find(nil).Limit(limit).Skip(currentPage-1 * limit).Sort("-created_at").All(&list)
+	return list,err
+}
+
+func PostsCount() (count int) {
+	collection := db.C("post")
+	count,_ = collection.Find(nil).Count()
+	return count
 }
 
 //GetPublishedPosts returns a slice published of posts with their associations
 func GetPublishedPosts() ([]Post, error) {
 	var list []Post
 	collection := db.C("post")
-	err := collection.Find(nil).All(&list)
+	err := collection.Find(bson.M{"published":true}).All(&list)
 	return list, err
 	//var list []Post
 	//err := db.Select(&list, "SELECT * FROM posts WHERE published=$1 ORDER BY posts.id DESC", true)
@@ -163,20 +180,15 @@ func GetPostMonths() ([]Post, error) {
 //GetPostsByTag returns a slice of published posts associated with tag name
 func GetPostsByTag(name string) ([]Post, error) {
 	var list []Post
-	//err := db.Select(&list, "SELECT * FROM posts WHERE published=$1 AND EXISTS (SELECT null FROM poststags WHERE poststags.post_id=posts.id AND poststags.tag_name=$2) ORDER BY created_at DESC", true, name)
-	//if err != nil {
-	//	return list, err
-	//}
-	//if err := fillPostsAssociations(list); err != nil {
-	//	return list, err
-	//}
-	return list, nil
+	collection := db.C("post")
+	err := collection.Find(bson.M{"tags": bson.M{"$in": []string{name}}}).All(&list)
+	return list, err
 }
 
 func GetPostsByCategory(name string) ([]Post, error) {
 	var list []Post
 	collection := db.C("post")
-	err := collection.Find(bson.M{"category": name}).Sort("-_id").All(&list)
+	err := collection.Find(bson.M{"categories": name}).Sort("-_id").All(&list)
 	//logrus.Errorf("tag list : %s", list)
 	return list, err
 }

@@ -1,6 +1,5 @@
 {{define "tags/show"}}
-{{template "header" .}}
-{{template "navbar" .}}
+{{template "_block/header" .}}
 <div class="container" role="main">
   {{template "sidebar" .}}
   <div id="main-column">
@@ -12,5 +11,5 @@
     {{end}}
   </div>
 </div>
-{{template "footer" .}}
+{{template "_block/footer" .}}
 {{end}}

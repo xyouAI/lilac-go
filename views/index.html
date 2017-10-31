@@ -1,0 +1,97 @@
+{{define "index"}}
+{{template "_block/header" .}}
+<main id="main" class="main">
+    <div class="main-inner">
+        <div class="content-wrap">
+            <div id="content" class="content">
+                {{range .List}}
+                <section id="posts" class="posts-expand">
+                    <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+                        <header class="post-header">
+                            <h1 class="post-title" itemprop="name headline">
+                                <a class="post-title-link" href="/posts/{{.Slug}}"
+                                   itemprop="url">
+                                    {{.Title}}
+                                </a>
+                            </h1>
+                            <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="{{dateTime .CreatedAt}}" content="{{dateTime .CreatedAt}}">
+             {{dateTime .CreatedAt}}
+            </time>
+          </span>
+              <span class="post-category">
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/{{.Category}}" itemprop="url" rel="index">
+                    <span itemprop="name">{{.Category}}</span>
+                  </a>
+                </span>
+            </span>
+                            </div>
+                        </header>
+                        <div class="post-body" itemprop="articleBody">
+                            {{.Summary}}
+                            <div class="post-button text-center">
+                                <a class="btn" href="/posts/{{.Slug}}">
+                                    阅读全文 »
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                        </div>
+
+                        <div>
+
+                        </div>
+
+                        <footer class="post-footer">
+                            <div class="post-eof"></div>
+                        </footer>
+                    </article>
+                </section>
+                {{end}}
+
+                {{if gt .Pagination.PageNums 1}}
+                <nav class="pagination">
+                    {{if .Pagination.HasPrev}}
+                    <a class="extend prev" rel="prev" href="{{.Pagination.PageLinkFirst}}"><i class="fa fa-angle-left"></i></a>
+                    {{end}}
+                    {{range $index, $page := .Pagination.Pages}}
+                    {{if $.Pagination.IsActive $page}}
+                    <span class="page-number current">{{$page}}</span>
+                    {{else}}
+                    <a class="page-number" href="{{$.Pagination.PageLink $page}}">{{$page}}</a>
+                    {{end}}
+                    {{end}}
+                    {{if .Pagination.HasNext}}
+                    <a class="extend next" rel="next" href="{{.Pagination.PageLinkNext}}"><i class="fa fa-angle-right"></i></a>
+                    {{end}}
+                </nav>
+                {{end}}
+
+
+
+            </div>
+
+
+        </div>
+        {{if 0}}
+        <!--TODO sidebar-->
+        {{template "_block/sidebar" .}}
+        {{end}}
+    </div>
+</main>
+{{template "_block/footer" .}}
+{{end}}

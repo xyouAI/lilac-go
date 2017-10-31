@@ -1,35 +1,31 @@
 {{define "tags/index"}}
-{{template "header" .}}
-{{template "dashboard/navbar" .}}
-{{template "dashboard/sidebar" .}}
-<div id="main-column" class="container-fluid" role="main">
-  <h2>{{.Title}}</h2>
-  <table class="table panel">
-    <thead>
-      <tr>
-        <th class="name">Name</th>
-        <th class="post_count">Posts</th>
-        <th class="actions">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{range .List}}
-        <tr>
-          <td class="name">{{.Name}}</td>
-          <td class="post_count">{{.PostCount}}</td>
-          <td class="actions">
-            <a href="/tags/{{.Name}}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-eye-open"></span></a>
-            <form class="inline-block" action="/admin/tags/delete/{{.Name}}" method="post">
-              <button type="button" class="btn btn-sm btn-danger" onclick="((confirm('Are you sure')) ? this.form.submit() : null);"><span class="glyphicon glyphicon-remove"></span></button>
-            </form>
-          </td>
-        </tr>
-      {{end}}
-    </tbody>
-  </table>
-  <div class="actions">
-    <a href="/admin/new_tag" class="btn btn-primary">New Tag</a>
-  </div>
-</div>
-{{template "footer" .}}
+{{template "_block/header" .}}
+<main id="main" class="main">
+    <div class="main-inner">
+        <div class="content-wrap">
+            <div id="content" class="content">
+                <div id="posts" class="posts-expand">
+                    <div class="tag-cloud">
+                        <div class="tag-cloud-title">
+                            目前共计 {{.Count}} 个标签
+                        </div>
+                        <div class="tag-cloud-tags">
+                            {{range .List}}
+                            <a href="/tags/{{.Name}}/" style="font-size: 12px; color: #363636">{{.Name}}</a>
+                            {{end}}
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+        {{template "_block/sidebar" .}}
+
+    </div>
+</main>
+{{template "_block/footer" .}}
 {{end}}

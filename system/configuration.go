@@ -28,6 +28,7 @@ type Config struct {
 //DatabaseConfig contains database connection info
 type DatabaseConfig struct {
 	Host     string
+	Port	 string
 	Name     string //database name
 	User     string
 	Password string

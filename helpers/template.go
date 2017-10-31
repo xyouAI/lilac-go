@@ -3,7 +3,6 @@ package helpers
 import (
 	"fmt"
 	"time"
-
 	"github.com/phpfor/lilac-go/models"
 	"github.com/gin-gonic/gin"
 )
@@ -18,9 +17,25 @@ func IsActive(active interface{}, uri string) string {
 	return ""
 }
 
+//Pagination
+func Pagination(currentPage,count int) []int {
+	pages := 10
+	//a := strconv.ParseInt(count, 10, 64)
+	//b := strconv.ParseInt(currentPage, 10, 64)
+	//pages := math.Ceil(a/b)
+	p := models.Pagination{pages,currentPage,nil}
+	r := p.PageList(4)
+	return r
+}
+
 //DateTime prints timestamp in human format
 func DateTime(t time.Time) string {
 	return fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
+}
+
+//DateTime format
+func DateDate(t time.Time) string {
+	return fmt.Sprintf("%02d-%02d", t.Month(), t.Day())
 }
 
 //StringInSlice returns true if value is in list slice

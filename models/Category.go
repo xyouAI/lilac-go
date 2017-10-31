@@ -2,7 +2,6 @@ package models
 
 import (
 	"gopkg.in/mgo.v2/bson"
-	"github.com/Sirupsen/logrus"
 )
 
 //Tag struct contains post tag info
@@ -39,14 +38,6 @@ func GetCategorys() ([]Category, error) {
 	var list []Category
 	collection := db.C("category")
 	err := collection.Find(nil).Sort("-_id").All(&list)
-	logrus.Errorf("category list : %s", list)
 	return list, err
 }
 
-//UpdateTags inserts new (non existent) post tags and updates associations
-func (post *Post) UpdateCategorys() error {
-	//collection := db.C("category")
-	//post_count,_ := db.C("post").Find(bson.M{"category":bson.M{"$in":[]string{post.Category}}}).Count()
-	//collection.Upsert(bson.M{"name":post.Category},bson.M{"name":post.Category,"post_count":post_count})
-	return nil
-}

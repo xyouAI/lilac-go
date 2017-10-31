@@ -1,0 +1,62 @@
+{{define "categories/index"}}
+{{template "_block/header" .}}
+<main id="main" class="main">
+    <div class="main-inner">
+        <div class="content-wrap">
+            <div id="content" class="content">
+
+
+                <div id="posts" class="posts-expand">
+
+
+                    <div class="post-block page" style="opacity: 1; display: block;">
+                        <header class="post-header" style="opacity: 1; display: block; transform: translateY(0px);">
+
+                            <h1 class="post-title" itemprop="name headline">分类</h1>
+
+
+                        </header>
+
+
+                        <div class="post-body" style="opacity: 1; display: block; transform: translateY(0px);">
+
+
+                            <div class="category-all-page">
+                                <div class="category-all-title">
+                                    目前共计 {{.Count}} 个分类
+                                </div>
+                                <div class="category-all">
+                                    <ul class="category-list">
+                                        {{range .List}}
+                                        <li class="category-list-item"><a class="category-list-link"
+                                                                          href="/categories/{{.Name}}/">{{.Name}}</a><span
+                                                class="category-list-count">{{.PostCount}}</span></li>
+                                        {{end}}
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+</main>
+
+{{template "_block/footer" .}}
+{{end}}

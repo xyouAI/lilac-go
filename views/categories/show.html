@@ -1,0 +1,57 @@
+{{define "categories/show"}}
+{{template "header" .}}
+<main id="main" class="main">
+    <div class="main-inner">
+        <div class="content-wrap">
+            <div id="content" class="content">
+
+
+                <div class="post-block category" style="opacity: 1; display: block;">
+
+                    <div id="posts" class="posts-collapse">
+                        <div class="collection-title" style="opacity: 1; display: block; transform: translateX(0px);">
+                            <h1>
+                                {{if .Category.Name}}{{.Category.Name}}
+                                <small>分类</small>
+                                {{end}}
+                                {{if .Tag.Name}}{{.Tag.Name}}
+                                <small>标签</small>
+                                {{end}}
+                            </h1>
+                        </div>
+
+
+                        {{range .List}}
+                        <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article"
+                                 style="opacity: 1; display: block; transform: translateY(0px);">
+                            <header class="post-header">
+                                <h1 class="post-title">
+                                    <a class="post-title-link" href="/posts/{{.Slug}}" itemprop="url">
+                                        <span itemprop="name">{{.Title}}</span>
+                                    </a>
+                                </h1>
+                                <div class="post-meta">
+                                    <time class="post-time" itemprop="dateCreated" datetime="{{dateTime .CreatedAt}}"
+                                          content="{{dateDate .CreatedAt}}">
+                                        {{dateDate .CreatedAt}}
+                                    </time>
+                                </div>
+                            </header>
+                        </article>
+                        {{end}}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+</main>
+{{template "_block/footer" .}}
+{{end}}

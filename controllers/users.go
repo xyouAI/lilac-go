@@ -22,7 +22,7 @@ func UserIndex(c *gin.Context) {
 	h["Title"] = "List of users"
 	h["Active"] = "users"
 	h["List"] = list
-	c.HTML(http.StatusOK, "users/index", h)
+	c.HTML(http.StatusOK, "admin/users/index", h)
 }
 
 //UserNew handles GET /admin/new_user route
@@ -33,7 +33,7 @@ func UserNew(c *gin.Context) {
 	session := sessions.Default(c)
 	h["Flash"] = session.Flashes()
 	session.Save()
-	c.HTML(http.StatusOK, "users/form", h)
+	c.HTML(http.StatusOK, "admin/users/form", h)
 }
 
 //UserCreate handles POST /admin/new_user route
@@ -76,7 +76,7 @@ func UserEdit(c *gin.Context) {
 	session := sessions.Default(c)
 	h["Flash"] = session.Flashes()
 	session.Save()
-	c.HTML(http.StatusOK, "users/form", h)
+	c.HTML(http.StatusOK, "admin/users/form", h)
 }
 
 //UserUpdate handles POST /admin/users/:id/edit route

@@ -63,10 +63,12 @@ func main() {
 	router.GET("/logout", controllers.LogoutGet)
 
 	router.GET("/posts/:slug", controllers.PostGet)
-	router.GET("/category/:name", controllers.CategoryGet)
+	router.GET("/categories", controllers.Categories)
+	router.GET("/categories/:name", controllers.CategoryGet)
+	router.GET("/tags", controllers.Tags)
 	router.GET("/tags/:name", controllers.TagGet)
 	router.GET("/pages/:slug", controllers.PageGet)
-	//router.GET("/archives/:year/:month", controllers.ArchiveGet)
+	router.GET("/archives/:year/:month", controllers.ArchiveGet)
 	//router.GET("/rss", controllers.RssGet)
 	//
 	authorized := router.Group("/admin")
@@ -84,9 +86,9 @@ func main() {
 		authorized.GET("/pages", controllers.PageIndex)
 		authorized.GET("/new_page", controllers.PageNew)
 		authorized.POST("/new_page", controllers.PageCreate)
-		authorized.GET("/pages/edit/:slug", controllers.PageEdit)
-		authorized.POST("/pages/edit/:slug", controllers.PageUpdate)
-		authorized.POST("/pages/delete/:slug", controllers.PageDelete)
+		authorized.GET("/pages/edit/:id", controllers.PageEdit)
+		authorized.POST("/pages/edit/:id", controllers.PageUpdate)
+		authorized.POST("/pages/delete/:id", controllers.PageDelete)
 
 		authorized.GET("/posts", controllers.PostIndex)
 		authorized.GET("/new_post", controllers.PostNew)
@@ -95,18 +97,18 @@ func main() {
 		authorized.POST("/posts/edit/:id", controllers.PostUpdate)
 		authorized.POST("/posts/delete/:id", controllers.PostDelete)
 
-		authorized.GET("/category", controllers.CategoryIndex)
+		authorized.GET("/categories", controllers.CategoryIndex)
 		authorized.GET("/new_category", controllers.CategoryNew)
 		authorized.POST("/new_category", controllers.CategoryCreate)
-		authorized.POST("/category/delete/:name", controllers.CategoryDelete)
+		authorized.POST("/categories/delete/:name", controllers.CategoryDelete)
 
 		authorized.GET("/tags", controllers.TagIndex)
 		authorized.GET("/new_tag", controllers.TagNew)
 		authorized.POST("/new_tag", controllers.TagCreate)
 		authorized.POST("/tags/delete/:name", controllers.TagDelete)
 	}
-	// Listen and server on 0.0.0.0:8080
-	router.Run(":8080")
+	// Listen and server on 0.0.0.0:8000
+	router.Run(":8000")
 }
 
 //setLogger initializes logrus logger with some defaults
@@ -131,6 +133,7 @@ func setTemplate(router *gin.Engine) {
 		"isActive":      helpers.IsActive,
 		"stringInSlice": helpers.StringInSlice,
 		"dateTime":      helpers.DateTime,
+		"dateDate":      helpers.DateDate,
 		"recentPosts":   helpers.RecentPosts,
 		"tags":          helpers.Tags,
 		"archives":      helpers.Archives,

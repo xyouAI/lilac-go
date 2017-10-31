@@ -1,7 +1,6 @@
 {{define "errors/403"}}
-{{template "header" .}}
-{{template "navbar" .}}
-<div class="container" role="main">		
+{{template "_block/header" .}}
+<div class="container" role="main">
   <div class="jumbotron">
     <h1>403 Error</h1>
     <div class="description">
@@ -10,5 +9,5 @@
     </div>
   </div>
 </div>
-{{template "footer" .}}
+{{template "_block/footer" .}}
 {{end}}
