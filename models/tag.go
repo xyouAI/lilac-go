@@ -2,7 +2,6 @@ package models
 
 import (
 	"gopkg.in/mgo.v2/bson"
-	"github.com/Sirupsen/logrus"
 )
 
 //Tag struct contains post tag info
@@ -39,7 +38,6 @@ func GetTags() ([]Tag, error) {
 	var list []Tag
 	collection := db.C("tag")
 	err := collection.Find(nil).Sort("-_id").All(&list)
-	logrus.Errorf("tag list : %s", list)
 	return list, err
 }
 

@@ -8,6 +8,7 @@ import (
 	"github.com/phpfor/lilac-go/models"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 
@@ -33,16 +34,22 @@ func TagGet(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "errors/404", nil)
 		return
 	}
-	list, err := models.GetPostsByTag(tag.Name)
+	var filter models.DaoFilter
+	filter.Tag.Name = tag.Name
+	count,_ := filter.GetPostsCount()
+	currentPage, _ := strconv.Atoi(c.DefaultQuery("p","1"))
+	limit := 10
+	Pagination := helpers.NewPaginator(c,limit,count)
+	list, err := filter.GetPostsByPage(currentPage,limit)
 	if err != nil {
 		c.HTML(http.StatusNotFound, "errors/404", nil)
 		return
 	}
-
 	h := helpers.DefaultH(c)
 	h["Tag"] = tag
 	h["Active"] = "tags"
 	h["List"] = list
+	h["Pagination"] = Pagination
 	c.HTML(http.StatusOK, "categories/show", h)
 }
 

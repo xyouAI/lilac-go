@@ -19,7 +19,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">发表于</span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="{{dateTime .CreatedAt}}" content="{{dateTime .CreatedAt}}">
              {{dateTime .CreatedAt}}
             </time>
@@ -29,7 +29,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
+              <span class="post-meta-item-text">In </span>
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/{{.Category}}" itemprop="url" rel="index">
                     <span itemprop="name">{{.Category}}</span>
@@ -42,7 +42,7 @@
                             {{.Summary}}
                             <div class="post-button text-center">
                                 <a class="btn" href="/posts/{{.Slug}}">
-                                    阅读全文 »
+                                    Read More »
                                 </a>
                             </div>
 
@@ -63,8 +63,9 @@
                 </section>
                 {{end}}
 
-                {{if gt .Pagination.PageNums 1}}
+
                 <nav class="pagination">
+                    {{if gt .Pagination.PageNums 1}}
                     {{if .Pagination.HasPrev}}
                     <a class="extend prev" rel="prev" href="{{.Pagination.PageLinkFirst}}"><i class="fa fa-angle-left"></i></a>
                     {{end}}
@@ -78,9 +79,8 @@
                     {{if .Pagination.HasNext}}
                     <a class="extend next" rel="next" href="{{.Pagination.PageLinkNext}}"><i class="fa fa-angle-right"></i></a>
                     {{end}}
+                    {{end}}
                 </nav>
-                {{end}}
-
 
 
             </div>

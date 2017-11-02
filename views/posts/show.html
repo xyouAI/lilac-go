@@ -15,7 +15,7 @@
             <span class="post-meta-item-icon">
               <i class="fa fa-calendar-o"></i>
             </span>
-            <span class="post-meta-item-text">发表于</span>
+            <span class="post-meta-item-text">Posted on</span>
             <time itemprop="dateCreated" datetime="{{dateTime .Post.CreatedAt}}" content="{{dateTime .Post.CreatedAt}}">
               {{dateTime .Post.CreatedAt}}
             </time>
@@ -26,7 +26,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              <span class="post-meta-item-text">分类于</span>
+              <span class="post-meta-item-text">In</span>
 
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
                   <a href="/categories/{{.Post.Category}}/" itemprop="url" rel="index">

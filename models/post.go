@@ -31,8 +31,9 @@ type Post struct {
 	Tags           []string      `form:"tags" json:"tags" bson:",omitempty"`
 }
 
-type PostPages struct {
-	Count int
+type Filter struct {
+	Category string
+	Tag		string
 }
 
 //type TagList struct {
@@ -109,18 +110,36 @@ func GetPosts() ([]Post, error) {
 	return list, err
 }
 
-//GetPostsByPage
-func GetPostsByPage(currentPage, limit int) ([]Post ,error) {
-	var list []Post
+func (filter *DaoFilter) GetPostsCount() (int ,error) {
 	collection := db.C("post")
-	err := collection.Find(nil).Limit(limit).Skip(currentPage-1 * limit).Sort("-created_at").All(&list)
-	return list,err
+	query := bson.M{}
+	if len(filter.Category.Name) > 0 {
+		query["category"] = filter.Category.Name
+	}
+	if len(filter.Tag.Name) > 0 {
+		query["tags"] = bson.M{"$in": []string{filter.Tag.Name}}
+	}
+	count,err := collection.Find(query).Count()
+	return count,err
 }
 
-func PostsCount() (count int) {
+//GetPostsByPage
+func (filter *DaoFilter) GetPostsByPage(currentPage, limit int) ([]Post ,error) {
+	var list []Post
 	collection := db.C("post")
-	count,_ = collection.Find(nil).Count()
-	return count
+	find := bson.M{}
+	if len(filter.Category.Name) > 0 {
+		find["category"] = filter.Category.Name
+	}
+	if len(filter.Tag.Name) > 0 {
+		find["tags"] = bson.M{"$in": []string{filter.Tag.Name}}
+	}
+	query := collection.Find(nil).Limit(limit)
+	if currentPage > 1 {
+		query.Skip(currentPage - 1 * limit)
+	}
+	err := query.Sort("-created_at").All(&list)
+	return list,err
 }
 
 //GetPublishedPosts returns a slice published of posts with their associations

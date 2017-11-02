@@ -12,10 +12,16 @@ type Dao struct {
 	session *mgo.Session
 }
 
+type DaoFilter struct {
+	Post     Post
+	Category Category
+	Tag      Tag
+}
+
 // set mongodb
 func NewDao() (*Dao, error) {
 	c := system.GetConfig().Database
-	url := fmt.Sprintf("%s:%s",c.Host,c.Port)
+	url := fmt.Sprintf("%s:%s", c.Host, c.Port)
 	session, err := mgo.Dial(url)
 	if err != nil {
 		panic(err)

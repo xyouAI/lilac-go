@@ -11,9 +11,12 @@ import (
 
 //HomeGet handles GET / route
 func HomeGet(c *gin.Context) {
+	var filter models.DaoFilter
+	count,_ := filter.GetPostsCount()
 	currentPage, _ := strconv.Atoi(c.DefaultQuery("p","1"))
-	Pagination := helpers.NewPaginator(c,10,20)
-	list, err := models.GetPostsByPage(currentPage,1)
+	limit := 10
+	Pagination := helpers.NewPaginator(c,limit,count)
+	list, err := filter.GetPostsByPage(currentPage,limit)
 	if err != nil {
 		c.HTML(http.StatusInternalServerError, "errors/500", nil)
 		logrus.Error(err)

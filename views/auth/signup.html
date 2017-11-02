@@ -1,7 +1,6 @@
 {{define "auth/signup"}}
-{{template "header" .}}
-{{template "navbar" .}}
-<div class="container" role="main">		
+{{template "admin/header" .}}
+<div class="container" role="main">
   <div class="panel panel-default">
     <div class="panel-body">
       <form method="post" class="form-horizontal" data-parsley-validate>
@@ -54,5 +53,5 @@
     </div>
   </div>
 </div>
-{{template "footer" .}}
+{{template "admin/footer" .}}
 {{end}}

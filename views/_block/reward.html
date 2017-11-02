@@ -1,11 +1,12 @@
 {{define "_block/reward"}}
+{{if 0}}
+<!--TODO-->
 <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
     <div>如果你觉得我的分享还不错，您可以打赏一杯茶钱哦 ^_^</div>
     <button id="rewardButton" disable="enable"
             onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
         <span>赏</span>
     </button>
-    {{if 0}}
     <div id="QR" style="display: none;">
         <div id="wechat" style="display: inline-block">
             <img id="wechat_qr" src="/images/wechat-reward-image.jpg"
@@ -18,6 +19,6 @@
             <p>微信打赏</p>
         </div>
     </div>
-    {{end}}
 </div>
+{{end}}
 {{end}}

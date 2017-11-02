@@ -8,6 +8,7 @@ import (
 	"github.com/phpfor/lilac-go/models"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func Categories(c *gin.Context) {
@@ -32,7 +33,13 @@ func CategoryGet(c *gin.Context) {
 		c.HTML(http.StatusNotFound, "errors/404", nil)
 		return
 	}
-	list, err := models.GetPostsByCategory(Category.Name)
+	var filter models.DaoFilter
+	filter.Category.Name = Category.Name
+	count,_ := filter.GetPostsCount()
+	currentPage, _ := strconv.Atoi(c.DefaultQuery("p","1"))
+	limit := 10
+	Pagination := helpers.NewPaginator(c,limit,count)
+	list, err := filter.GetPostsByPage(currentPage,limit)
 	if err != nil {
 		c.HTML(http.StatusNotFound, "errors/404", nil)
 		return
@@ -43,6 +50,7 @@ func CategoryGet(c *gin.Context) {
 	h["Category"] = Category
 	h["Active"] = "categories"
 	h["List"] = list
+	h["Pagination"] = Pagination
 	c.HTML(http.StatusOK, "categories/show", h)
 }
 

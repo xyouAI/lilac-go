@@ -1,7 +1,6 @@
 {{define "auth/login"}}
-{{template "header" .}}
-{{template "navbar" .}}
-<div class="container" role="main">		
+{{template "admin/header" .}}
+<div class="container" role="main">
   <div class="panel panel-default">
     <div class="panel-body">
       <form class="form-horizontal" method="post" data-parsley-validate>
@@ -35,5 +34,5 @@
     </div>
   </div>
 </div>
-{{template "footer" .}}
+{{template "admin/footer" .}}
 {{end}}
